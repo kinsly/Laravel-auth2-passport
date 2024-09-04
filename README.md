@@ -10,15 +10,31 @@ Please add the [Laravel\Passport\HasApiTokens] trait to your User model.
 1. Create collection varilable ```ACCESS-TOKEN```
 2. Create post response script for login and register
 ```
-// Extract the token from the response
+// Extract the token and refresh token from the response
 var jsonData = pm.response.json();
-var token = jsonData.data.token.access_token;;
+var token = jsonData.data.token.access_token;
+var refresh_token = jsonData.data.token.refresh_token;
 
-// Set Collection Varilable XSRF-TOKEN to access all other request
+// Set token and refresh token to collection variables
 pm.collectionVariables.set('ACCESS-TOKEN', token);
+pm.collectionVariables.set('REFRESH-TOKEN', refresh_token);
 
 ```
 3. add ```ACCESS-TOKEN``` variable to Authorization as a bearer token so that every request you made has bearer token included.
+
+*** Refresh Token
+1. Add below script to post response of the refresh token request
+    ```
+    // Extract the token from the response
+    var jsonData = pm.response.json();
+    var token = jsonData.data.access_token;
+    var refresh_token = jsonData.data.refresh_token;
+
+    // Set Collection Varilable XSRF-TOKEN to access all other request
+    pm.collectionVariables.set('ACCESS-TOKEN', token);
+    pm.collectionVariables.set('REFRESH-TOKEN', refresh_token);
+    ```
+2. Create collection variable ```REFRESH-TOKEN``` and set post body variable ```refresh_token``` and collection variable as the value for refresh token
 
 ** FAQ
 

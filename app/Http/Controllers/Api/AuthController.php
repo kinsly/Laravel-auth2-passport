@@ -90,15 +90,19 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'statusCode' => 200,
-            'message' => 'Authenticated use info.',
+            'message' => 'Authenticated user info.',
             'data' => $user,
         ], 200);
     }
 
+    public function testeee()
+    {
+        return "Wada";
+    }
     /**
      * RefreshToken
      */
-    public function RefreshToken(RefreshTokenRequest $request):JsonResponse
+    public function refreshToken(RefreshTokenRequest $request):JsonResponse
     {
         $response = Http::asForm()->post(env('APP_URL') . '/oauth/token', [
             'grant_type' => 'refresh_token',
