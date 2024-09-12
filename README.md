@@ -1,9 +1,36 @@
 
 ** Tutorial
+1. create laravel project
+```composer create-project laravel/laravel passport-authentication```
+2. Install Laravel Passport API packages
+```php artisan install:api --passport```
 
+Make sure to use UUIDs while above installation.
+```
 Would you like to use UUIDs for all client IDs? (yes/no)
 Please add the [Laravel\Passport\HasApiTokens] trait to your User model.  
+```
+3. Add ```HasApiTokens``` to User model
+4. Add below gurd to Auth Provider
+```
+'api' => [
+        'driver' => 'passport',
+        'provider' => 'users',
+    ],
+```
+5. Add Following to AppServiceProvider
+```
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Passport::enablePasswordGrant();
+    }
+```
 
+6. Create clients for you API
+```php artisan passport:client --password```
 
 
 ** Postman
