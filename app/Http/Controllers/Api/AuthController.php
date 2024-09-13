@@ -7,34 +7,71 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RefreshTokenRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Stmt\Catch_;
 
 class AuthController extends Controller
 {
     /**
      * User Registration
      * @param RegisterRequest $request
-     */
+    */
     public function register(RegisterRequest $request):JsonResponse
-    {
+    {   
+        //validate user data for registration
         $userData = $request->validated();
+        
+        //Manually verify email address till mail verification enabled
         $userData['email_verified_at'] = now();
 
+        //Create new user
         $user = User::create($userData);
+        
+        /**
+         * Catch errors like invalid code, secrete, sever error on auth2.0, etc.
+         * Used to catch auth2.0 serrors and rollback created user
+        **/
+        try{
+            $response = Http::post(env('APP_URL').'/oauth/token', [
+                'grant_type' => 'password',
+                'client_id' => env('PASSPORT_PASSWORD_CLIENT_ID'),
+                'client_secret' => env('PASSPORT_PASSWORD_SECRET'),
+                'username' => $userData['email'],
+                'password' => $userData['password'],
+                'scope' => '',
+            ]);
 
-        $response = Http::post(env('APP_URL').'/oauth/token', [
-            'grant_type' => 'password',
-            'client_id' => env('PASSPORT_PASSWORD_CLIENT_ID'),
-            'client_secret' => env('PASSPORT_PASSWORD_SECRET'),
-            'username' => $userData['email'],
-            'password' => $userData['password'],
-            'scope' => '',
-        ]);
+            if ($response->failed()) {
+                throw new Exception('Failed to obtain access token.');
+            }
+
+        }catch(Exception $e){
+            /**
+             * Rollback transaction. 
+             * We cannot use db:rollback function. Because we need user created to get access token.
+             */
+            if (isset($user)) {
+                $user->delete();
+            }
+
+            // Log the error
+            Log::error('User registration failed: ' . $e->getMessage());
+
+            //Send error while getting access tokens
+            return response()->json([
+                'success' => false,
+                'statusCode' => 500,
+                'message' => $e->getMessage()
+            ],500);
+        }//end of try-catch
 
         $user['token'] = $response->json();
+
         return response()->json([
             'success' => true,
             'statusCode' => 201,
