@@ -90,6 +90,7 @@ class AuthController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
 
+            
             $response = Http::post(env('APP_URL') . '/oauth/token', [
                 'grant_type' => 'password',
                 'client_id' => env('PASSPORT_PASSWORD_CLIENT_ID'),
@@ -99,6 +100,16 @@ class AuthController extends Controller
                 'scope' => '',
             ]);
 
+            //Send error while getting access tokens
+            if ($response->failed()) {               
+                return response()->json([
+                    'success' => false,
+                    'statusCode' => 500,
+                    'message' =>"Internal server error!"
+                ],500);
+            }
+
+            //attach access token to user object
             $user['token'] = $response->json();
 
             return response()->json([
@@ -107,9 +118,10 @@ class AuthController extends Controller
                 'message' => 'User has been logged successfully.',
                 'data' => $user,
             ], 200);
+        //Invalid user credentials
         } else {
             return response()->json([
-                'success' => true,
+                'success' => false,
                 'statusCode' => 401,
                 'message' => 'Unauthorized.',
                 'errors' => 'Unauthorized',
@@ -132,10 +144,7 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function testeee()
-    {
-        return "Wada";
-    }
+ 
     /**
      * RefreshToken
      */
@@ -148,6 +157,14 @@ class AuthController extends Controller
             'client_secret' => env('PASSPORT_PASSWORD_SECRET'),
             'scope' => '',
         ]);
+
+        if($response->failed()){
+            return response()->json([
+                'success' => false,
+                'statusCode' => 500,
+                'message' =>"Internal server error!"
+            ],500);
+        }
 
         return response()->json([
             'success' => true,
