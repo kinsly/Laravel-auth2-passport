@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
@@ -12,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -25,7 +26,7 @@ class AuthController extends Controller
         $userData = $request->validated();
         
         //Manually verify email address till mail verification enabled
-        $userData['email_verified_at'] = now();
+        //$userData['email_verified_at'] = now();
 
         //Create new user
         $user = User::create($userData);
@@ -68,8 +69,17 @@ class AuthController extends Controller
             ],500);
         }//end of try-catch
 
+        /**
+         * User creation successfull
+         */
+
+        //Add token
         $user['token'] = $response->json();
 
+        //send mail verification
+        event(new Registered($user));
+
+        //send successs response back to user
         return response()->json([
             'success' => true,
             'statusCode' => 201,

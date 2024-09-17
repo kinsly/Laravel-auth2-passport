@@ -63,6 +63,11 @@ pm.collectionVariables.set('REFRESH-TOKEN', refresh_token);
     ```
 2. Create collection variable ```REFRESH-TOKEN``` and set post body variable ```refresh_token``` and collection variable as the value for refresh token
 
+** Using Mail service - Resend
+
+Change mail mailer to resend in .env ```MAIL_MAILER=resend ```
+Next create API Key and add ```RESEND_KEY=xxxxxxxxxx```
+
 ** FAQ
 
 Q. Curl error: Operation timed out after ...
