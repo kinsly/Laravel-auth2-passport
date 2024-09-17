@@ -10,10 +10,8 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use PhpParser\Node\Stmt\Catch_;
 
 class AuthController extends Controller
 {
@@ -179,7 +177,9 @@ class AuthController extends Controller
      */
     public function logout():JsonResponse
     {
-        Auth::user()->tokens()->delete();
+        /** @var App/Model/User */
+        $user = Auth::user();
+        $user->tokens()->delete();
 
         return response()->json([
             'success' => true,
