@@ -75,7 +75,7 @@ class PasswordResetController extends Controller
                 'success' => true,
                 'statusCode' => 201,
                 'message' => 'Password reset successful'
-            ]);
+            ],201);
 
         }else{
             return response()->json([

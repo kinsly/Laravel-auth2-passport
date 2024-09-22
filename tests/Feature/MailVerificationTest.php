@@ -12,6 +12,7 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class MailVerificationTest extends TestCase
@@ -63,7 +64,9 @@ class MailVerificationTest extends TestCase
             return true;
         });
         //Mail verfication is not protected with bearer token in order to make mail verification easier
-        $this->actingAs($user)->getJson($verificationUrl);
+        Passport::actingAs($user);
+        $this->getJson($verificationUrl);
+        
         //Check verified event is triggered
         Event::assertDispatched(Verified::class);
         //Check user mail verfication column is updated on DB
@@ -101,7 +104,9 @@ class MailVerificationTest extends TestCase
             return true;
         });
         //Mail verfication is not protected with bearer token in order to make mail verification easier
-        $this->actingAs($user)->getJson($verificationUrl);
+        Passport::actingAs($user);
+        $this->getJson($verificationUrl);
+
         //Check verified event is not triggered
         Event::assertNotDispatched(Verified::class);
         //Check user mail verfication column is not updated on DB

@@ -5,13 +5,13 @@ use App\Http\Controllers\Api\Auth\PasswordResetController;
 use App\Http\Controllers\Api\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
 
 /** This url will be send as email verification link to use. It was set with route name verification.verify */
 Route::get('/email/verify/{id}/{hash}',[VerifyEmailController::class, 'verifyEmail'] )
-        ->middleware(['signed'])->name('verification.verify');
+        ->middleware(['auth:api', 'signed'])->name('verification.verify');
 
 /** 
  * Password reset links 
