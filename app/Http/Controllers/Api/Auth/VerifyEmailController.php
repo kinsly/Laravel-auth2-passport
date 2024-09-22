@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class ForgotPasswordController extends Controller
+class VerifyEmailController extends Controller
 {
     /**
      * @Method Get
@@ -15,7 +15,6 @@ class ForgotPasswordController extends Controller
      */
     public function verifyEmail(EmailVerificationRequest $request):JsonResponse
     {
-        
         $request->fulfill();
         return response()->json([
             'success' => true,

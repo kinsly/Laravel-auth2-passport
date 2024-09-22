@@ -25,9 +25,6 @@ class AuthController extends Controller
         //validate user data for registration
         $userData = $request->validated();
         
-        //Manually verify email address till mail verification enabled
-        //$userData['email_verified_at'] = now();
-
         //Create new user
         $user = User::create($userData);
         
@@ -98,7 +95,6 @@ class AuthController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
 
-            
             $response = Http::post(env('APP_URL') . '/oauth/token', [
                 'grant_type' => 'password',
                 'client_id' => env('PASSPORT_PASSWORD_CLIENT_ID'),
@@ -126,6 +122,7 @@ class AuthController extends Controller
                 'message' => 'User has been logged successfully.',
                 'data' => $user,
             ], 200);
+
         //Invalid user credentials
         } else {
             return response()->json([
