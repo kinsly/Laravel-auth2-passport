@@ -9,6 +9,7 @@ use Tests\TestCase;
 
 class UserLoginTest extends TestCase
 {
+    use RefreshDatabase;
     protected function setUp(): void
     {
         parent::setUp();

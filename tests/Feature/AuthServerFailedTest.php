@@ -9,7 +9,8 @@ use Tests\TestCase;
 
 class AuthServerFailedTest extends TestCase
 {
-       /**
+    use RefreshDatabase;
+    /**
      * Testing failed Auth2.0 server while registering
      */
     public function test_failing_auth_server_while_registering():void

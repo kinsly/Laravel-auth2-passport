@@ -8,7 +8,53 @@ Full OAuth2 server API implementation with Laravel 11. Includes
 3. PHP Feature tests
 4. Postman files with API documentation 
 
-## Tutorial
+## Setup
+1. Run ```git clone ```
+2. Run ```Composer install```
+3. Rename .env example file to .env using ```mv .env.example .env```
+4. Add application key using ```php artisan key:generate```
+5. Add your database information to ```.env```
+6. Update ```APP_URL``` on .env file to match the url of the application. It is mandatary to run auth server correctly.
+7. run ```php artisan migrate```
+8. Install passport using ```php artisan install:api --passport```
+9. Create passport clients to use API ```php artisan passport:client --password```
+10. If you are testing this application locally using XAMPP Windows make sure to use localhost without any ports or use vhosts. If you plan to use vhost use below code on Apache host configurations
+```
+Default File Location: 
+C:\xampp\apache\conf\extra\httpd-vhosts.conf
+```
+```
+<VirtualHost *:80>
+	ServerAdmin webmaster@guestpost.example.com
+# example: D:\Laravel\passport-authentication\public/
+
+ DocumentRoot "location of the laravel project public folder"
+ ServerName jwt.localhost
+ ErrorLog "logs/jwt.localhost.com-error.log"
+ CustomLog "logs/jwt.localhost.com-access.log" common
+
+#Not including public folder. Location to project folder only
+ <Directory "location of the laravel project folder">
+	Options Indexes FollowSymLinks MultiViews
+	AllowOverride all
+	Order Deny,Allow
+	Allow from all
+	Require all granted
+	Require all granted
+ </Directory>
+</VirtualHost>
+```
+11. Test application using postman requests. Check Postman Collection folder of this project for all postman request files. Import them.
+
+## Mail Verification after registration
+If you update ```.env``` file with correct resend key you will receive mail activation link. Get that link and paste that link on postman to activate.
+
+## Password Reset
+Send request named  as "password-reset-request" on postman to get password reset mail.
+Send post request to server with form data with token, email and password with password confirmation. Check "reset-password" request. Add token value in the url to token value in the form data. Make sure to send request for 
+```http://localhost/api/reset-password```
+
+## Tutorial to integrate passport on Laravel
 
 1. create laravel project
 

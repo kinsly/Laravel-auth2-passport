@@ -1,0 +1,408 @@
+{
+	"info": {
+		"_postman_id": "e45f052f-f5a4-4c3c-a0e8-8c55593afa10",
+		"name": "Laravel Passport",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "321583"
+	},
+	"item": [
+		{
+			"name": "register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Extract the token and refresh token from the response\r",
+							"var jsonData = pm.response.json();\r",
+							"var token = jsonData.data.token.access_token;\r",
+							"var refresh_token = jsonData.data.token.refresh_token;\r",
+							"\r",
+							"// Set token and refresh token to collection variables\r",
+							"pm.collectionVariables.set('ACCESS-TOKEN', token);\r",
+							"pm.collectionVariables.set('REFRESH-TOKEN', refresh_token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "First User",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "user@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "password_confirmation",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://jwt.localhost/api/register",
+					"protocol": "http",
+					"host": [
+						"jwt",
+						"localhost"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "verify-email",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://jwt.localhost/api/email/verify/xx/xxxxx?expires=xxx&signature=xxx",
+					"protocol": "http",
+					"host": [
+						"jwt",
+						"localhost"
+					],
+					"path": [
+						"api",
+						"email",
+						"verify",
+						"xx",
+						"xxxxx"
+					],
+					"query": [
+						{
+							"key": "expires",
+							"value": "xxx"
+						},
+						{
+							"key": "signature",
+							"value": "xxx"
+						}
+					]
+				},
+				"description": "Just copy paste email verification link here"
+			},
+			"response": []
+		},
+		{
+			"name": "password-reset-request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "user@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://jwt.localhost/api/forgot-password",
+					"protocol": "http",
+					"host": [
+						"jwt",
+						"localhost"
+					],
+					"path": [
+						"api",
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reset-password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "user@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": "token in the url.",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "new_password",
+							"type": "text"
+						},
+						{
+							"key": "password_confirmation",
+							"value": "new_password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://jwt.localhost/api/reset-password",
+					"protocol": "http",
+					"host": [
+						"jwt",
+						"localhost"
+					],
+					"path": [
+						"api",
+						"reset-password"
+					]
+				},
+				"description": "Get token from the link send to email and send post request to reset password."
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Extract the token and refresh token from the response\r",
+							"var jsonData = pm.response.json();\r",
+							"var token = jsonData.data.token.access_token;\r",
+							"var refresh_token = jsonData.data.token.refresh_token;\r",
+							"\r",
+							"// Set token and refresh token to collection variables\r",
+							"pm.collectionVariables.set('ACCESS-TOKEN', token);\r",
+							"pm.collectionVariables.set('REFRESH-TOKEN', refresh_token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "user@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://jwt.localhost/api/login",
+					"protocol": "http",
+					"host": [
+						"jwt",
+						"localhost"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "profile",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://jwt.localhost/api/profile",
+					"protocol": "http",
+					"host": [
+						"jwt",
+						"localhost"
+					],
+					"path": [
+						"api",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://jwt.localhost/api/logout",
+					"protocol": "http",
+					"host": [
+						"jwt",
+						"localhost"
+					],
+					"path": [
+						"api",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "refresh-token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Extract the token from the response\r",
+							"var jsonData = pm.response.json();\r",
+							"var token = jsonData.data.access_token;\r",
+							"var refresh_token = jsonData.data.refresh_token;\r",
+							"\r",
+							"// Set Collection Varilable XSRF-TOKEN to access all other request\r",
+							"pm.collectionVariables.set('ACCESS-TOKEN', token);\r",
+							"pm.collectionVariables.set('REFRESH-TOKEN', refresh_token);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "refresh_token",
+							"value": "{{REFRESH-TOKEN}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://jwt.localhost/api/refresh-token",
+					"protocol": "http",
+					"host": [
+						"jwt",
+						"localhost"
+					],
+					"path": [
+						"api",
+						"refresh-token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{ACCESS-TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ACCESS-TOKEN",
+			"value": "empty",
+			"type": "string"
+		},
+		{
+			"key": "REFRESH-TOKEN",
+			"value": "empty",
+			"type": "string"
+		}
+	]
+}
