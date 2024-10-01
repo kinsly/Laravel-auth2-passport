@@ -1,6 +1,6 @@
 
   
-
+![Static Badge](https://img.shields.io/badge/Laravel-11-red?style=flat) ![Static Badge](https://img.shields.io/badge/Passport-laravel-green?style=flat&labelColor=red) ![Static Badge](https://img.shields.io/badge/Postman-2.1-green?style=flat&labelColor=red) ![Static Badge](https://img.shields.io/badge/API-Laravel-green?style=flat&labelColor=red) ![Static Badge](https://img.shields.io/badge/PHP_UNIT-Tests-brightgreen?style=flat&labelColor=red)
 # About
 Full OAuth2 server API implementation with Laravel 11. Includes
 1. Authentication routes login, register, forgot password, password reset
